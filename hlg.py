@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 
+
 def check_product_stock(product_url):
     headers = {
         "User-Agent":
@@ -40,3 +41,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
