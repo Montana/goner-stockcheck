@@ -1,5 +1,28 @@
 import requests
 from bs4 import BeautifulSoup
+import smtplib
+from email.mime.text import MIMEText
+
+
+def send_email(subject, message):
+    sender_email = "your_email@gmail.com"  # Replace with your sender email
+    receiver_email = "receiver_email@gmail.com"  # Replace with the recipient's email
+    smtp_server = "smtp.gmail.com"  # Use your email provider's SMTP server
+    smtp_port = 587  # SMTP port (587 for Gmail)
+    smtp_username = "your_username"  # Your email username
+    smtp_password = "your_password"  # Your email password
+
+    # Create the email content
+    msg = MIMEText(message)
+    msg["Subject"] = subject
+    msg["From"] = sender_email
+    msg["To"] = receiver_email
+
+    # Connect and send the email
+    with smtplib.SMTP(smtp_server, smtp_port) as server:
+        server.starttls()
+        server.login(smtp_username, smtp_password)
+        server.sendmail(sender_email, receiver_email, msg.as_string())
 
 
 def check_product_stock(product_url):
@@ -34,9 +57,13 @@ def main():
     if stock_status is None:
         print("Failed to determine stock status.")
     elif stock_status:
-        print("Product is in stock.")
+        message = "Product is in stock!"
+        print(message)
+        send_email("Product In Stock", message)
     else:
-        print("Product is out of stock.")
+        message = "Product is out of stock."
+        print(message)
+        send_email("Product Out of Stock", message)
 
 
 if __name__ == "__main__":
